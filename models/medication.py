@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import List
 
 
 class MedicationInput(BaseModel):
@@ -9,7 +8,7 @@ class MedicationInput(BaseModel):
 
 
 class Medication(MedicationInput):
-    codes: List[int] = None
+    code: int
 
 
 

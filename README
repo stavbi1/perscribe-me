@@ -1,0 +1,20 @@
+## How to run
+
+1. install dependencies from requirements.txt
+2. run main.py
+3. go to http://127.0.0.1:8000/docs
+
+## caveats
+1. When adding a medication to a prescription, it validates it against the clinical tables API,
+and only adds it if the name and dosage given are exactly the same
+2. A medication's code is determined by the a combination of the name and the dosage given
+3. When closing a prescription, a `warning` object is returned with every interaction description that exists between every
+medication with itself or with another one in the following structure:
+
+`
+interactions: {
+        [drug_code1 + drug_code2]:  warnings[]
+    }
+`
+
+4. I didn't have much time for testing it and check for edge cases

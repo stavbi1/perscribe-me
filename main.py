@@ -1,11 +1,9 @@
 from fastapi import FastAPI
-from routes.prescription.prescription_router import router as prescription_router
-from routes.medication.medication_router import router as medication_router
+from routes.api import router as api_router
 
 app = FastAPI()
 
-app.include_router(prescription_router, prefix="/prescription")
-app.include_router(medication_router, prefix="/medication")
+app.include_router(api_router, prefix="/api")
 
 if __name__ == "__main__":
     import uvicorn

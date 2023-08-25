@@ -1,9 +1,15 @@
 import httpx
 
+CLINICAL_TABLES_API = 'https://clinicaltables.nlm.nih.gov/api'
+DRUG_CODES = 'RXCUIS'
+DOSAGES = 'STRENGTHS_AND_FORMS'
 
-async def validate_medication(name):
-    drug_codes = 'RXCUIS'
-    url = f'https://clinicaltables.nlm.nih.gov/api/rxterms/v3/search?terms={name}&ef={drug_codes}'
+
+async def validate_medication(name, dosage):
+    """validates that the medication's name and dosage matches exactly an existing medication,
+    if so, return the medication codes"""
+
+    url = f'{CLINICAL_TABLES_API}/rxterms/v3/search?terms={name}&ef={DRUG_CODES},{DOSAGES}'
 
     async with httpx.AsyncClient() as client:
         response = await client.get(url)
@@ -14,8 +20,11 @@ async def validate_medication(name):
 
             if result_amount == 1:
                 try:
-                    return data[2][drug_codes][0]
-                except (NameError, AttributeError) as e:
-                    pass
+                    dosage_index = list(map(str.strip, data[2][DOSAGES][0])).index(dosage)
+                    medication_code = data[2][DRUG_CODES][0][dosage_index]
+
+                    return medication_code
+                except (NameError, AttributeError, ValueError) as e:
+                    print(e)
 
         return None

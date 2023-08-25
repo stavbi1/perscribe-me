@@ -12,7 +12,7 @@ def insert_prescription(prescription: Prescription):
 
 
 def get_prescription(prescription_id):
-    if prescription_id < len(prescriptions_db.prescriptions):
+    if prescription_id in prescriptions_db.prescriptions:
         return prescriptions_db.prescriptions[prescription_id]
 
 

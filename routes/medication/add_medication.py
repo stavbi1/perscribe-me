@@ -14,13 +14,13 @@ async def add_medication_to_prescription(prescription_id: int, medication_input:
     if not prescription:
         raise HTTPException(status_code=404, detail="Prescription not found")
 
-    medication_codes = await validate_medication(medication_input.name)
+    medication_code = await validate_medication(medication_input.name, medication_input.dosage)
 
-    if not medication_codes:
-        raise HTTPException(status_code=404, detail="Medication not found")
+    if not medication_code:
+        raise HTTPException(status_code=404, detail="a medication with this dosage was not found")
 
     medication = Medication(
-        codes=medication_codes,
+        code=medication_code,
         **medication_input.dict()
     )
 
